@@ -3,4 +3,4 @@ Team members:
 
 Student1: Bashayer Khalifa Aldoseri - ID: 202204435
 
-Student2: Kawthar Aman - ID:202007918
+Student2: Kawthar Ashoor Aman - ID:202007918
