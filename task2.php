@@ -1,13 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>Student Statistics</title>
-    <!-- Include Pico CSS for styling -->
-    <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@1.5.7/css/pico.min.css">
-</head>
-<body>
-    <main class="container">
-        <h1>Student Enrollment Statistics</h1>
 
         <?php
         // Define the API URL with filters
@@ -29,16 +19,27 @@
             die("<p>Error decoding the JSON response. Invalid JSON format.</p>");
         }
 
-        // Extract the 'records' from the response
-        $records = $data['records'] ?? [];
+        if (!$data || !isset($data["results"])){
+            die('Error fetching the data from the API');
+        }
 
-        // Debugging step: Uncomment this to print raw API response
-        /*
-        echo "<pre>";
-        print_r($data);
-        echo "</pre>";
-        */
+        // Extract the 'records' from the response
+        $result = $data["results"] ;    
         ?>
+
+        
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Student Statistics</title>
+    <!-- Include Pico CSS for styling -->
+    <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@1.5.7/css/pico.min.css">
+</head>
+
+<body>
+
+    <main class="container">
+        <h1>Student Enrollment Statistics</h1>
 
         <!-- Create a responsive table to display the data -->
         <table role="grid">
@@ -52,28 +53,28 @@
                     <th>Number of Students</th>
                 </tr>
             </thead>
+
             <tbody>
                 <?php
-                // Check if records are available
-                if (empty($records)) {
-                    echo "<tr><td colspan='6'>No data available</td></tr>";
-                } else {
                     // Loop through each record and display it in the table
-                    foreach ($records as $record) {
-                        $fields = $record['record']['fields'] ?? [];
-                        echo "<tr>";
-                        echo "<td>" . htmlspecialchars($fields['year'] ?? 'N/A') . "</td>";
-                        echo "<td>" . htmlspecialchars($fields['semester'] ?? 'N/A') . "</td>";
-                        echo "<td>" . htmlspecialchars($fields['the_programs'] ?? 'N/A') . "</td>";
-                        echo "<td>" . htmlspecialchars($fields['nationality'] ?? 'N/A') . "</td>";
-                        echo "<td>" . htmlspecialchars($fields['colleges'] ?? 'N/A') . "</td>";
-                        echo "<td>" . htmlspecialchars($fields['number_of_students'] ?? 'N/A') . "</td>";
-                        echo "</tr>";
+                    foreach ($result as $student) {
+                    ?>
+                     <tr>
+                         <td><?php echo $student ["year"]; ?> </td>
+                         <td><?php echo $student ["semester"]; ?> </td>
+                         <td><?php echo $student ["the_programs"]; ?> </td>
+                         <td><?php echo $student ["nationality"]; ?> </td>
+                         <td><?php echo $student ["colleges"]; ?> </td>
+                         <td><?php echo $student ["number_of_students"]; ?> </td>
+                   </tr>
+                   <?php
                     }
-                }
                 ?>
             </tbody>
         </table>
+
     </main>
+
 </body>
+
 </html>
